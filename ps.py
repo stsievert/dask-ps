@@ -31,6 +31,9 @@ class PS:
             return None
         return self.models[key]
     
+    def step(self):
+        return max(self.models)
+    
     def pull_latest(self):
         step = max(self.models)
         return step, self.pull(step)

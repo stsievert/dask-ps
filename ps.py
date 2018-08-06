@@ -32,8 +32,8 @@ class PS:
         return self.models[key]
     
     def pull_latest(self):
-        key = max(self.models)
-        return key, self.pull(key)
+        step = max(self.models)
+        return step, self.pull(step)
         
     def push(self, key, grads):
         """

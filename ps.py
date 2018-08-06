@@ -31,8 +31,13 @@ class PS:
             return None
         return self.models[key]
     
+    @property
     def step(self):
         return max(self.models)
+    
+    @property
+    def latest_model(self):
+        return self.models[self.step]
     
     def pull_latest(self):
         step = max(self.models)

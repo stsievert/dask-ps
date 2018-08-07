@@ -14,56 +14,6 @@ def clone(model):
     return copy.deepcopy(model)
 
 
-class PS:
-    def __init__(self, model, args, device, num_workers=1):
-        self.models = {0: model}
-        self._grads = {}
-        model = model.to(device)
-        self.model = model
-        self.optimizer = optim.SGD(self.model.parameters(), lr=args.lr, momentum=args.momentum)
-        self.num_workers = num_workers
-        
-    def pull(self, key):
-        """
-        For a worker to pull a model from this PS
-        """
-        if key not in self.models:
-            return None
-        return self.models[key]
-    
-    @property
-    def step(self):
-        return max(self.models)
-    
-    @property
-    def latest_model(self):
-        return self.models[self.step]
-    
-    def pull_latest(self):
-        step = max(self.models)
-        return step, self.pull(step)
-        
-    def push(self, key, grads):
-        """
-        For a worker to push some gradients to this PS
-        """
-        if key not in self._grads:
-            self._grads[key] = []
-        self._grads[key] += [grads]
-        
-        # have we collected enough gradients?
-        if len(self._grads[key]) == self.num_workers:
-            old_model = clone(self.model)
-            self.aggregate(self._grads[key])
-            self.models[key + 1] = self.model
-            self.models[key] = old_model
-    
-    def aggregate(self, grads):
-        for name, param in self.model.named_parameters():
-            worker_grads = [grad[name] for grad in grads]
-            param.grad = sum(worker_grads)
-        self.optimizer.step()
-        self.optimizer.zero_grad()
         
         
 class Worker:

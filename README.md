@@ -4,6 +4,11 @@ This repository implements initial sketches for a Dask parameter server. The rea
 
 The implementations in this repository were discussed more in https://github.com/dask/dask-ml/issues/171.
 
+* `Centralized-PS.ipynb`: the main notebook behind this repo
+* `Ring-all-reduce.ipynb`: a very rough draft of an all-reduce strategy
+* `initial-sketches/`: initial versions of the centralized and decentralized
+  parameter servers
+
 There are two variants for this:
 
 1. a centralized parameter server (PS)
